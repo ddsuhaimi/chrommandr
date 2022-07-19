@@ -15,22 +15,50 @@ import allCommands from './allCommands';
 
 export default function HotkeysDemo() {
   const [open, setOpen] = React.useState(false);
-  const [commandLabel, setCommandLabel] = useState('');
-  const [filteredCommands, setFilteredCommands] = useState(allCommands);
+  const [commandLabel, setCommandLabel] = useState('>');
   const sh = 'ctrl+alt+p';
+  const [filteredCommands, setFilteredCommands] = useState(allCommands);
+
+  const fillTabCommands = () => {
+    chrome.runtime.sendMessage({ message: 'getTabs' }, function (response) {
+      console.log('response from getTabs', response);
+      const tabCommands = response.response.map((tab) => {
+        return {
+          id: tab.id,
+          label: tab.title,
+          selected: false,
+          is_tab: true,
+          action: () => {
+            chrome.runtime.sendMessage({ message: 'openTab', tabId: tab.id });
+          },
+        };
+      });
+      setFilteredCommands(tabCommands);
+    });
+  };
 
   useEffect(() => {
-    let currentFilteredCommands = allCommands.filter((command, idx) => {
-      if (command.label.toLowerCase().includes(commandLabel.toLowerCase()))
-        return true;
+    let currentFilteredCommands = allCommands;
+    if (commandLabel.length === 1 && commandLabel === '>') {
+      currentFilteredCommands = allCommands;
+    } else if (commandLabel.length > 1) {
+      const realCommand = commandLabel.substring(1);
+      currentFilteredCommands = allCommands.filter((command, idx) => {
+        if (command.label.toLowerCase().includes(realCommand.toLowerCase()))
+          return true;
 
-      return false;
-    });
-    currentFilteredCommands = currentFilteredCommands.map((command, idx) =>
-      idx === 0
-        ? { ...command, selected: true }
-        : { ...command, selected: false }
-    );
+        return false;
+      });
+
+      currentFilteredCommands = currentFilteredCommands.map((command, idx) =>
+        idx === 0
+          ? { ...command, selected: true }
+          : { ...command, selected: false }
+      );
+    } else if (commandLabel.length === 0) {
+      fillTabCommands();
+    }
+
     setFilteredCommands(currentFilteredCommands);
   }, [commandLabel]);
 
@@ -54,13 +82,13 @@ export default function HotkeysDemo() {
 
   const onActionCompleted = () => {
     setOpen(false);
-    setCommandLabel('');
+    setCommandLabel('>');
   };
 
   return (
     <Hotkeys keyName={sh} onKeyDown={onKeyDown}>
       <Modal
-        isOpen={true}
+        isOpen={open}
         onClose={() => {
           setOpen((open) => !open);
         }}

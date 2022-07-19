@@ -5,6 +5,7 @@ const allCommands = [
     action: () => chrome.runtime.sendMessage({ message: 'openSettings' }, (response) => {
       console.log('response from background', response);
     }),
+    is_tab: false,
   },
   {
     id: 'openNewTab',
@@ -12,6 +13,7 @@ const allCommands = [
     action: () => chrome.runtime.sendMessage({ message: 'openNewTab' }, (response) => {
       console.log('response from background', response);
     }),
+    is_tab: false,
   },
 ];
 
