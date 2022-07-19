@@ -16,11 +16,14 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     const settingsUrl = 'chrome://settings';
     chrome.tabs.create({ url: settingsUrl });
     sendResponse({ response: 'response from background' });
-    return true;
   }
   if (request.message === 'printPage') {
     // chrome.tabs.create({ url: chrome.runtime.getURL('print.html') });
     // window.print()
+    sendResponse({ response: 'response from background' });
+  }
+  if (request.message === 'openNewTab') {
+    chrome.tabs.create({})
     sendResponse({ response: 'response from background' });
   }
 });
