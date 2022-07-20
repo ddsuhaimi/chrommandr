@@ -19,6 +19,53 @@ export default function HotkeysDemo() {
   const sh = 'ctrl+alt+p';
   const [filteredCommands, setFilteredCommands] = useState(allCommands);
 
+  useEffect(() => {
+    let isTabCommand = true
+    if (commandLabel.length > 0 ) {
+      const firstLetter = commandLabel.charAt(0);
+      if (firstLetter === ">") isTabCommand = false;
+    }
+
+    let currentFilteredCommands = allCommands;
+    // console.log(commandLabel, commandLabel.length, isTabCommand);
+    if (isTabCommand) {
+      if (commandLabel.length === 0) {
+        fillTabCommands();
+      } else {
+        currentFilteredCommands = filteredCommands.filter((command, idx) => {
+          if (command.label.toLowerCase().includes(commandLabel.toLowerCase()))
+            return true;
+          return false;
+        });
+
+        currentFilteredCommands = currentFilteredCommands.map((command, idx) =>
+          idx === 0
+            ? { ...command, selected: true }
+            : { ...command, selected: false }
+        );
+      }
+    } else {
+      if (commandLabel.length === 1) {
+        currentFilteredCommands = allCommands;
+      } else if (commandLabel.length > 1) {
+        const realCommand = commandLabel.substring(1);
+        currentFilteredCommands = allCommands.filter((command, idx) => {
+          if (command.label.toLowerCase().includes(realCommand.toLowerCase()))
+            return true;
+          return false;
+        });
+
+        currentFilteredCommands = currentFilteredCommands.map((command, idx) =>
+          idx === 0
+            ? { ...command, selected: true }
+            : { ...command, selected: false }
+        );
+      }
+    }
+    setFilteredCommands(currentFilteredCommands);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [commandLabel]);
+
   const fillTabCommands = () => {
     chrome.runtime.sendMessage({ message: 'getTabs' }, function (response) {
       console.log('response from getTabs', response);
@@ -36,31 +83,6 @@ export default function HotkeysDemo() {
       setFilteredCommands(tabCommands);
     });
   };
-
-  useEffect(() => {
-    let currentFilteredCommands = allCommands;
-    if (commandLabel.length === 1 && commandLabel === '>') {
-      currentFilteredCommands = allCommands;
-    } else if (commandLabel.length > 1) {
-      const realCommand = commandLabel.substring(1);
-      currentFilteredCommands = allCommands.filter((command, idx) => {
-        if (command.label.toLowerCase().includes(realCommand.toLowerCase()))
-          return true;
-
-        return false;
-      });
-
-      currentFilteredCommands = currentFilteredCommands.map((command, idx) =>
-        idx === 0
-          ? { ...command, selected: true }
-          : { ...command, selected: false }
-      );
-    } else if (commandLabel.length === 0) {
-      fillTabCommands();
-    }
-
-    setFilteredCommands(currentFilteredCommands);
-  }, [commandLabel]);
 
   const onKeyDown = (keyName, e, handle) => {
     // console.log('test:onKeyDown', keyName, e, handle);
@@ -88,7 +110,7 @@ export default function HotkeysDemo() {
   return (
     <Hotkeys keyName={sh} onKeyDown={onKeyDown}>
       <Modal
-        isOpen={open}
+        isOpen={true}
         onClose={() => {
           setOpen((open) => !open);
         }}
