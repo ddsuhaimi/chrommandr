@@ -3,7 +3,7 @@ import CommandItem from './CommandItem';
 import { Box, UnorderedList } from '@chakra-ui/react';
 
 
-const CommandItemContainer = ({ filteredCommands, onActionCompleted, commandRef }) => {
+const CommandItemContainer = ({ filteredCommands, onActionCompleted, commandRef, filteredCommandLabel }) => {
   return (
     <Box mt={2}>
       <UnorderedList marginInlineStart={0}>
@@ -13,6 +13,7 @@ const CommandItemContainer = ({ filteredCommands, onActionCompleted, commandRef 
             key={command.id}
             onActionCompleted={onActionCompleted}
             commandRef={commandRef}
+            commandLabel={filteredCommandLabel}
           />
         ))}
       </UnorderedList>
