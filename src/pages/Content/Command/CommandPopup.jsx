@@ -110,7 +110,7 @@ export default function HotkeysDemo() {
   return (
     <Hotkeys keyName={sh} onKeyDown={onKeyDown}>
       <Modal
-        isOpen={true}
+        isOpen={open}
         onClose={() => {
           setOpen((open) => !open);
         }}
