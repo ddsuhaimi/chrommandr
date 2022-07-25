@@ -3,7 +3,7 @@ import { ListItem } from '@chakra-ui/react';
 
 const getIndicesOf = (searchStr, str, caseSensitive) => {
   var searchStrLen = searchStr.length;
-  if (searchStrLen == 0) {
+  if (searchStrLen === 0) {
     return [];
   }
   var startIndex = 0,
@@ -21,7 +21,9 @@ const getIndicesOf = (searchStr, str, caseSensitive) => {
 }
 
 const BoldedText = ({ text, shouldBeBold }) => {
-
+  if (shouldBeBold[0] === ">") {
+    shouldBeBold = shouldBeBold.substring(1)
+  }
   const occurenceIndices = getIndicesOf(shouldBeBold, text[0] === ">" ? text.substring(1) : text);
   const arr = [];
   for (let i = 0; i < text.length; i++) {
