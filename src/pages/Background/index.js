@@ -47,4 +47,19 @@ chrome.runtime.onMessage.addListener(function (
     // });
     return true
   }
+  if (request.message === 'closeBrowser') {
+    chrome.tabs.query({ currentWindow: true }, (tabs) => {
+      
+      console.log("response from background", tabs);
+      for (const openTab of tabs) {
+        chrome.tabs.remove(openTab.id);
+      }
+      sendResponse({ response: tabs });
+    });
+    chrome.tabs.query({ currentWindow: true }, (tabs) => {
+      console.log("response from background", tabs);
+      sendResponse({ response: tabs });
+    });
+    return true
+  }
 });

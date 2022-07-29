@@ -15,6 +15,14 @@ const allCommands = [
     }),
     is_tab: false,
   },
+  {
+    id: 'closeBrowser',
+    label: 'Close Browser',
+    action: () =>  chrome.runtime.sendMessage({ message: 'closeBrowser' }, (response) => {
+      console.log('response from background', response);
+    }),
+    is_tab: false,
+  },
 ];
 
 export default allCommands;
