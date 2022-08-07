@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Hotkeys from 'react-hot-keys';
+import {useKeys} from 'rooks';
 // import Modal from './Modal';
 import {
   Box,
@@ -15,8 +15,8 @@ import allCommands from './allCommands';
 
 export default function HotkeysDemo() {
   const [open, setOpen] = React.useState(false);
+  const containerRef = useRef(document);
   const [commandLabel, setCommandLabel] = useState('>');
-  const sh = 'ctrl+alt+p';
   const [filteredCommands, setFilteredCommands] = useState(allCommands);
 
   useEffect(() => {
@@ -84,13 +84,20 @@ export default function HotkeysDemo() {
     });
   };
 
-  const onKeyDown = (keyName, e, handle) => {
-    // console.log('test:onKeyDown', keyName, e, handle);
-    if (keyName === sh) {
-      setOpen(true);
+  const handleCmdK = async (e) => {
+    if (!open) {
+      setOpen(true)
+    } else {
+      setOpen(false)
     }
+
+    // prevent browser from handling CMD/CTRL + K
+    e.preventDefault();
   };
 
+  useKeys(["ControlLeft", "KeyK"], handleCmdK, { target: containerRef });
+  useKeys(["MetaLeft", "KeyK"], handleCmdK, { target: containerRef });
+  
   const onChangeCommand = (e) => {
     setCommandLabel(e.target.value);
   };
@@ -108,7 +115,6 @@ export default function HotkeysDemo() {
   };
 
   return (
-    <Hotkeys keyName={sh} onKeyDown={onKeyDown}>
       <Modal
         isOpen={open}
         onClose={() => {
@@ -136,6 +142,5 @@ export default function HotkeysDemo() {
           </ModalBody>
         </ModalContent>
       </Modal>
-    </Hotkeys>
   );
 }
