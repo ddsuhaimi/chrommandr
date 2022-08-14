@@ -14,7 +14,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://motherfuckingwebsite.com/"],
+      "matches": ["http://127.0.0.1/"],
       "js": ["contentScript.bundle.js"],
       "css": ["content.styles.css"]
     }

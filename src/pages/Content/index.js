@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './content.styles.css';
 
-import { ChakraProvider } from '@chakra-ui/react';
+import CommandPopup from './Command/CommandPopup';
 
 import ReactDOM from 'react-dom';
-import CommandPopup from './Command/CommandPopup';
 import { printLine } from './modules/print';
 
 console.log('Content script works!');
@@ -15,15 +15,59 @@ const app = document.createElement('div');
 app.id = 'my-extension-root';
 document.body.appendChild(app);
 function App() {
+  const [open, setOpen] = useState(false);
   return (
-    <ChakraProvider>
-      <div>
-        <CommandPopup />
-      </div>
-    </ChakraProvider>
+    <div>
+      <CommandPopup />
+    </div>
+
   );
 }
-ReactDOM.render(<App />, app);
+// ReactDOM.render(<App />, app);
+
+// my injected code
+// window.addEventListener('load', () => {
+//   const injectDiv = document.createElement('div')
+//   injectDiv.id = 'extension-host'
+//   const shadowRoot = injectDiv.attachShadow({ mode: 'open' })
+
+//   // note inline use of webpack raw-loader, so that the css
+//   // file gets inserted as raw text, instead of attached to <head>
+//   // as with the webpack style-loader
+
+//   shadowRoot.innerHTML = // just using template string
+//     `
+//      <div id='shadowReactRoot' />
+//      `
+//   document.body.appendChild(injectDiv)
+//   ReactDOM.render(
+//         <App />,
+//         // note you have to start your query in the shadow DOM
+//         // in order to find your root
+//         shadowRoot.querySelector('#shadowReactRoot')
+//       )
+// })
+
+window.addEventListener('load', () => {
+  let extensionRoot = document.getElementById('extension-host');
+  if (extensionRoot) {
+    // Create the shadow root
+    const shadowRoot = extensionRoot.shadowRoot;
+
+    if (shadowRoot) {
+      let div = shadowRoot.getElementById('extension');
+      if (!div) {
+        // Create a div element
+        div = document.createElement('div');
+        div.setAttribute('id', 'extension');
+
+        // Append div to shadow DOM
+        shadowRoot.appendChild(div);
+        ReactDOM.render(<App />, div);
+      }
+    }
+  }
+});
 
 console.log('content 12!');
 console.log('content 13');

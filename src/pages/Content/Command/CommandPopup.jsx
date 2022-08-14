@@ -1,29 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {useKeys} from 'rooks';
-// import Modal from './Modal';
-import {
-  Box,
-  FormControl,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
-} from '@chakra-ui/react';
+import { useKeys } from 'rooks';
 import CommandItemContainer from './CommandItemContainer';
 import allCommands from './allCommands';
 
-export default function HotkeysDemo() {
+export default function CommandPopup() {
   const [open, setOpen] = React.useState(false);
   const containerRef = useRef(document);
+  const toggleModalRef = useRef(null);
+  const inputRef = useRef(null);
   const [commandLabel, setCommandLabel] = useState('>');
   const [filteredCommands, setFilteredCommands] = useState(allCommands);
 
   useEffect(() => {
-    let isTabCommand = true
-    if (commandLabel.length > 0 ) {
+    let isTabCommand = true;
+    if (commandLabel.length > 0) {
       const firstLetter = commandLabel.charAt(0);
-      if (firstLetter === ">") isTabCommand = false;
+      if (firstLetter === '>') isTabCommand = false;
     }
 
     let currentFilteredCommands = allCommands;
@@ -33,15 +25,12 @@ export default function HotkeysDemo() {
         fillTabCommands();
       } else {
         currentFilteredCommands = filteredCommands.filter((command, idx) => {
-          if (command.label.toLowerCase().includes(commandLabel.toLowerCase()))
-            return true;
+          if (command.label.toLowerCase().includes(commandLabel.toLowerCase())) return true;
           return false;
         });
 
         currentFilteredCommands = currentFilteredCommands.map((command, idx) =>
-          idx === 0
-            ? { ...command, selected: true }
-            : { ...command, selected: false }
+          idx === 0 ? { ...command, selected: true } : { ...command, selected: false }
         );
       }
     } else {
@@ -50,20 +39,17 @@ export default function HotkeysDemo() {
       } else if (commandLabel.length > 1) {
         const realCommand = commandLabel.substring(1);
         currentFilteredCommands = allCommands.filter((command, idx) => {
-          if (command.label.toLowerCase().includes(realCommand.toLowerCase()))
-            return true;
+          if (command.label.toLowerCase().includes(realCommand.toLowerCase())) return true;
           return false;
         });
 
         currentFilteredCommands = currentFilteredCommands.map((command, idx) =>
-          idx === 0
-            ? { ...command, selected: true }
-            : { ...command, selected: false }
+          idx === 0 ? { ...command, selected: true } : { ...command, selected: false }
         );
       }
     }
     setFilteredCommands(currentFilteredCommands);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [commandLabel]);
 
   const fillTabCommands = () => {
@@ -86,18 +72,34 @@ export default function HotkeysDemo() {
 
   const handleCmdK = async (e) => {
     if (!open) {
-      setOpen(true)
+      setOpen(true);
     } else {
-      setOpen(false)
+      setOpen(false);
     }
 
     // prevent browser from handling CMD/CTRL + K
     e.preventDefault();
   };
 
-  useKeys(["ControlLeft", "KeyK"], handleCmdK, { target: containerRef });
-  useKeys(["MetaLeft", "KeyK"], handleCmdK, { target: containerRef });
-  
+  useEffect(() => {
+    if (open) {
+      toggleModalRef.current.click();
+      inputRef.current.focus();
+    }
+
+    return () => {
+      setOpen(false);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    toggleModalRef.current.click();
+    inputRef.current.focus();
+  }, []);
+
+  useKeys(['ControlLeft', 'KeyK'], handleCmdK, { target: containerRef });
+  useKeys(['MetaLeft', 'KeyK'], handleCmdK, { target: containerRef });
+
   const onChangeCommand = (e) => {
     setCommandLabel(e.target.value);
   };
@@ -115,32 +117,27 @@ export default function HotkeysDemo() {
   };
 
   return (
-      <Modal
-        isOpen={open}
-        onClose={() => {
-          setOpen((open) => !open);
-        }}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalBody p={0}>
-            <FormControl>
-              <Box p={2}>
-                <Input
-                  placeholder="Type your command"
-                  value={commandLabel}
-                  onChange={onChangeCommand}
-                  onKeyPress={onKeyPressEnter}
-                />
-              </Box>
-              <CommandItemContainer
-                filteredCommands={filteredCommands}
-                filteredCommandLabel={commandLabel}
-                onActionCompleted={onActionCompleted}
-              />
-            </FormControl>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+    <div>
+      <label ref={toggleModalRef} for="my-modal-4" class="hidden btn modal-button ">
+        open modal
+      </label>
+      <input type="checkbox" id="my-modal-4" class="modal-toggle" />
+      <label for="my-modal-4" class="modal cursor-pointer">
+        <label class="modal-box relative w-11/12 max-w-5xl" for="">
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Type here"
+            value={commandLabel}
+            onChange={onChangeCommand}
+            onKeyPress={onKeyPressEnter}
+            class="input input-bordered input-primary w-full"
+          />
+
+          <CommandItemContainer filteredCommands={filteredCommands} filteredCommandLabel={commandLabel} onActionCompleted={onActionCompleted} />
+
+        </label>
+      </label>
+    </div>
   );
 }

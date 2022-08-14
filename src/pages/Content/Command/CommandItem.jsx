@@ -1,5 +1,6 @@
-import React from 'react';
-import { ListItem } from '@chakra-ui/react';
+import React, {useRef, useEffect} from 'react';
+import clsx  from 'clsx';
+
 
 const getIndicesOf = (searchStr, str, caseSensitive) => {
   var searchStrLen = searchStr.length;
@@ -18,39 +19,32 @@ const getIndicesOf = (searchStr, str, caseSensitive) => {
     startIndex = index + searchStrLen;
   }
   return indices;
-}
+};
 
-const BoldedText = ({ text, shouldBeBold }) => {
-  if (shouldBeBold[0] === ">") {
-    shouldBeBold = shouldBeBold.substring(1)
+const BoldedText = ({ text, shouldBeBold, selected}) => {
+  if (shouldBeBold[0] === '>') {
+    shouldBeBold = shouldBeBold.substring(1);
   }
-  const occurenceIndices = getIndicesOf(shouldBeBold, text[0] === ">" ? text.substring(1) : text);
+  const occurenceIndices = getIndicesOf(shouldBeBold, text[0] === '>' ? text.substring(1) : text);
   const arr = [];
   for (let i = 0; i < text.length; i++) {
     if (occurenceIndices.includes(i)) {
       arr.push(text.substring(i, i + shouldBeBold.length));
-      i = i + shouldBeBold.length - 1
+      i = i + shouldBeBold.length - 1;
     } else {
       arr.push(text[i]);
     }
   }
   // console.log(occurenceIndices, arr);
   return (
-    <span>
+    <div className={clsx('block', selected && "active")}>
       {arr.map((item, index) => (
-        <span key={Math.random()}>
-          {item.toLowerCase() === shouldBeBold.toLowerCase() ? <b>{item}</b> : item}
-        </span>
+        <span key={Math.random()}>{item.toLowerCase() === shouldBeBold.toLowerCase() ? <b>{item}</b> : item}</span>
       ))}
-    </span>
-  )
-}
-const CommandItem = ({
-  command,
-  onActionCompleted,
-  commandRef,
-  commandLabel,
-}) => {
+    </div>
+  );
+};
+const CommandItem = ({ command, onActionCompleted, commandRef, commandLabel }) => {
   const onClickCommand = () => {
     command.action();
     onActionCompleted();
@@ -59,18 +53,12 @@ const CommandItem = ({
   // console.log("_> ", command.label, commandLabel);
 
   return (
-    <ListItem
+    <li
       cursor={'pointer'}
-      paddingX={2}
-      paddingY={2}
-      listStyleType="none"
-      bg={command.selected ? '#ccc' : '#fff'}
-      _hover={{ bg: '#ccc' }}
       onClick={onClickCommand}
-      ref={commandRef}
     >
-      <BoldedText text={command.label} shouldBeBold={commandLabel} />
-    </ListItem>
+      <BoldedText text={command.label} shouldBeBold={commandLabel} selected={command.selected} />
+    </li>
   );
 };
 

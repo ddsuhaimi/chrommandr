@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import CommandItem from './CommandItem';
-import { Box, UnorderedList } from '@chakra-ui/react';
-
 
 const CommandItemContainer = ({ filteredCommands, onActionCompleted, commandRef, filteredCommandLabel }) => {
   return (
-    <Box mt={2}>
-      <UnorderedList marginInlineStart={0}>
-        {filteredCommands.map((command) => (
+    <div>
+      <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full mt-4">
+        {filteredCommands.length === 0 && (
+          <li>
+            <a>No Matching Results</a>
+          </li>
+        )}
+        {filteredCommands.length  > 0 && filteredCommands.map((command) => (
+
           <CommandItem
             command={command}
             key={command.id}
@@ -16,8 +20,8 @@ const CommandItemContainer = ({ filteredCommands, onActionCompleted, commandRef,
             commandLabel={filteredCommandLabel}
           />
         ))}
-      </UnorderedList>
-    </Box>
+      </ul>
+    </div>
   );
 };
 
