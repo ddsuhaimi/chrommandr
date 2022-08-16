@@ -122,8 +122,8 @@ export default function CommandPopup() {
         open modal
       </label>
       <input type="checkbox" id="my-modal-4" class="modal-toggle" />
-      <label for="my-modal-4" class="modal cursor-pointer">
-        <label class="modal-box relative w-11/12 max-w-5xl" for="">
+      <label for="my-modal-4" class="modal cursor-pointer items-start">
+        <label class="modal-box relative w-11/12 max-w-5xl !translate-y-10" for="">
           <input
             ref={inputRef}
             type="text"
