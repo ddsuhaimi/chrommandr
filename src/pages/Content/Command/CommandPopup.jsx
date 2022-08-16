@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useKeys } from 'rooks';
+import { useKeys, useDidMount } from 'rooks';
 import CommandItemContainer from './CommandItemContainer';
 import allCommands from './allCommands';
 
@@ -36,6 +36,12 @@ export default function CommandPopup() {
     } else {
       if (commandLabel.length === 1) {
         currentFilteredCommands = allCommands;
+        currentFilteredCommands.map((command, idx) => {
+          if (idx === 0) {
+            command.selected = true;
+          }
+          return command;
+        });
       } else if (commandLabel.length > 1) {
         const realCommand = commandLabel.substring(1);
         currentFilteredCommands = allCommands.filter((command, idx) => {
@@ -66,6 +72,12 @@ export default function CommandPopup() {
           },
         };
       });
+      tabCommands.map((command, idx) => {
+        if (idx === 0) {
+          command.selected = true;
+        }
+        return command;
+      });
       setFilteredCommands(tabCommands);
     });
   };
@@ -91,6 +103,10 @@ export default function CommandPopup() {
       setOpen(false);
     };
   }, [open]);
+
+  useDidMount(() =>  {
+    setFilteredCommands(filteredCommands.map((command, idx) => (idx === 0 ? { ...command, selected: true } : { ...command, selected: false })));
+  });
 
   useEffect(() => {
     toggleModalRef.current.click();
