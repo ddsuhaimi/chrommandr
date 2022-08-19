@@ -10,8 +10,7 @@ You can install Chrommandr on Chromium-based browser such as Google Chrome, Chro
 
 
 ## Demo
-![DEMO Chrommandr](https://user-images.githubusercontent.com/30659198/185644723-51500fe9-1585-4414-ae39-ce6392f264a9.gif)
-
+![DEMO Chrommandr](https://user-images.githubusercontent.com/30659198/185647428-441b160f-c894-46da-bb58-73e713a569d2.gif)
 
 
 
