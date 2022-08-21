@@ -5,7 +5,7 @@ import CommandPopup from './Command/CommandPopup';
 
 import ReactDOM from 'react-dom';
 import { printLine } from './modules/print';
-
+import Modal from '../../components/Modal';
 console.log('Content script works!');
 console.log('Must reload extension for modifications to take effect.');
 
@@ -16,6 +16,11 @@ app.id = 'my-extension-root';
 document.body.appendChild(app);
 function App() {
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(false)
+
+  const toggleVisible = () => {
+    setVisible(!visible)
+  }
   return (
     <div>
       <CommandPopup />

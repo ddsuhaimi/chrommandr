@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useKeys, useDidMount } from 'rooks';
+import Modal from '../../../components/Modal';
 import CommandItemContainer from './CommandItemContainer';
 import allCommands from './allCommands';
 
@@ -25,7 +26,7 @@ export default function CommandPopup() {
         fillTabCommands();
       } else {
         currentFilteredCommands = filteredCommands.filter((command, idx) => {
-          if (command.label.toLowerCase().includes(commandLabel.toLowerCase())) return true;
+          if (command.label.toLowerCase().includes(commandLabel.trim().toLowerCase())) return true;
           return false;
         });
 
@@ -95,23 +96,18 @@ export default function CommandPopup() {
 
   useEffect(() => {
     if (open) {
-      toggleModalRef.current.click();
       inputRef.current.focus();
-    }
-
-    return () => {
-      setOpen(false);
-    };
+    } 
   }, [open]);
 
   useDidMount(() =>  {
     setFilteredCommands(filteredCommands.map((command, idx) => (idx === 0 ? { ...command, selected: true } : { ...command, selected: false })));
   });
 
-  useEffect(() => {
-    toggleModalRef.current.click();
-    inputRef.current.focus();
-  }, []);
+  // useEffect(() => {
+  //   toggleModalRef.current.click();
+  //   inputRef.current.focus();
+  // }, []);
 
   useKeys(['ControlLeft', 'KeyK'], handleCmdK, { target: containerRef });
   useKeys(['MetaLeft', 'KeyK'], handleCmdK, { target: containerRef });
@@ -128,18 +124,15 @@ export default function CommandPopup() {
   };
 
   const onActionCompleted = () => {
+    console.log("onActionCompleted");
     setOpen(false);
     setCommandLabel('>');
   };
-
+  console.log("open", open)
   return (
     <div>
-      <label ref={toggleModalRef} for="my-modal-4" class="hidden btn modal-button ">
-        open modal
-      </label>
-      <input type="checkbox" id="my-modal-4" class="modal-toggle" />
-      <label for="my-modal-4" class="modal cursor-pointer items-start">
-        <label class="modal-box relative w-11/12 max-w-5xl !translate-y-10" for="">
+      <Modal open={open} onClickBackdrop={() => setOpen(!open)} className="w-11/12 max-w-5xl !translate-y-10">
+        <Modal.Body>
           <input
             ref={inputRef}
             type="text"
@@ -151,9 +144,9 @@ export default function CommandPopup() {
           />
 
           <CommandItemContainer filteredCommands={filteredCommands} filteredCommandLabel={commandLabel} onActionCompleted={onActionCompleted} />
-
-        </label>
-      </label>
+        </Modal.Body>
+      </Modal>
+      
     </div>
   );
 }
