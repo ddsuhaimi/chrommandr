@@ -4,7 +4,7 @@ import CommandItem from './CommandItem';
 const CommandItemContainer = ({ filteredCommands, onActionCompleted, commandRef, filteredCommandLabel }) => {
   return (
     <div>
-      <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-full mt-4">
+      <ul tabIndex="0" className="w-full p-2 mt-4 shadow dropdown-content menu bg-base-100 rounded-box">
         {filteredCommands.length === 0 && (
           <li>
             <a>No Matching Results</a>

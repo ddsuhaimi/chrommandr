@@ -142,7 +142,7 @@ export default function CommandPopup() {
             value={commandLabel}
             onChange={onChangeCommand}
             onKeyPress={onKeyPressEnter}
-            class="input input-bordered input-primary w-full"
+            className="w-full input input-bordered input-primary"
           />
 
           <CommandItemContainer filteredCommands={filteredCommands} filteredCommandLabel={commandLabel} onActionCompleted={onActionCompleted} />
