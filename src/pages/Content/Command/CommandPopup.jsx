@@ -97,7 +97,9 @@ export default function CommandPopup() {
   useEffect(() => {
     if (open) {
       inputRef.current.focus();
-    } 
+    } else {
+      setCommandLabel('>');
+    }
   }, [open]);
 
   useDidMount(() =>  {
