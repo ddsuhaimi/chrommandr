@@ -70,12 +70,16 @@ let options = {
                 let extensionHost = document.getElementById(extensionHostID);
       
                 if (!extensionHost) {
+                  // ONLY FOR CONTENT SCRIPT
                   extensionHost = document.createElement('div');
                   extensionHost.setAttribute('id', extensionHostID);
                   document.body.append(extensionHost);
                   extensionHost.attachShadow({mode: 'open'});
                   // Add style tag to shadow host
                   extensionHost.shadowRoot.appendChild(element);
+                } else {
+                  // FOR EVERy OTHER PAGES
+                  document.head.append(element)
                 }
               },
             }
