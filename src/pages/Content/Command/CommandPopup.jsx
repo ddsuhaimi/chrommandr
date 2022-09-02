@@ -3,7 +3,7 @@ import { useKeys, useDidMount } from 'rooks';
 import Modal from '../../../components/Modal';
 import CommandItemContainer from './CommandItemContainer';
 import allCommands from './allCommands';
-
+import { getSettings, saveSettings} from '../../../service/storage'
 export default function CommandPopup() {
   const [open, setOpen] = React.useState(false);
   const containerRef = useRef(document);
@@ -11,7 +11,15 @@ export default function CommandPopup() {
   const inputRef = useRef(null);
   const [commandLabel, setCommandLabel] = useState('>');
   const [filteredCommands, setFilteredCommands] = useState(allCommands);
+  const [settings, setSettings] = useState(null);
 
+  useEffect( () => {
+    const fetchSettings = async () => {
+      const settings = await getSettings()
+      setSettings(settings)
+    }
+    fetchSettings()
+  }, [])
   useEffect(() => {
     let isTabCommand = true;
     if (commandLabel.length > 0) {
@@ -84,6 +92,8 @@ export default function CommandPopup() {
   };
 
   const handleCmdK = async (e) => {
+console.log(settings)
+
     if (!open) {
       setOpen(true);
     } else {
@@ -110,9 +120,21 @@ export default function CommandPopup() {
   //   toggleModalRef.current.click();
   //   inputRef.current.focus();
   // }, []);
-
-  useKeys(['ControlLeft', 'KeyK'], handleCmdK, { target: containerRef });
-  useKeys(['MetaLeft', 'KeyK'], handleCmdK, { target: containerRef });
+  let keys = ['ControlLeft', 'KeyK']
+  // TODO: extract to a helper function
+  if (settings?.browserShortcut) {
+    let shortCut = settings.browserShortcut.split('+')
+    shortCut = shortCut.map(item => item.toLowerCase().trim())
+    console.log("shortcute", shortCut)
+    keys = []
+    if (shortCut[0].toLowerCase() === 'ctrl'){
+      keys.push('ControlLeft')
+    }
+    keys.push(`Key${shortCut[1].toUpperCase()}`)
+  }
+  console.log("key;s", keys)
+  useKeys(keys, handleCmdK, { target: containerRef });
+  useKeys(keys, handleCmdK, { target: containerRef });
 
   const onChangeCommand = (e) => {
     setCommandLabel(e.target.value);
