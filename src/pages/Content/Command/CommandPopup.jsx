@@ -3,7 +3,10 @@ import { useKeys, useDidMount } from 'rooks';
 import Modal from '../../../components/Modal';
 import CommandItemContainer from './CommandItemContainer';
 import allCommands from './allCommands';
-import { getSettings, saveSettings} from '../../../service/storage'
+
+import * as storageService from '../../../service/storage';
+import * as commandService from '../../../service/command';
+
 export default function CommandPopup() {
   const [open, setOpen] = React.useState(false);
   const containerRef = useRef(document);
@@ -13,13 +16,13 @@ export default function CommandPopup() {
   const [filteredCommands, setFilteredCommands] = useState(allCommands);
   const [settings, setSettings] = useState(null);
 
-  useEffect( () => {
+  useEffect(() => {
     const fetchSettings = async () => {
-      const settings = await getSettings()
-      setSettings(settings)
-    }
-    fetchSettings()
-  }, [])
+      const settings = await storageService.getSettings();
+      setSettings(settings);
+    };
+    fetchSettings();
+  }, []);
   useEffect(() => {
     let isTabCommand = true;
     if (commandLabel.length > 0) {
@@ -92,7 +95,7 @@ export default function CommandPopup() {
   };
 
   const handleCmdK = async (e) => {
-console.log(settings)
+    console.log(settings);
 
     if (!open) {
       setOpen(true);
@@ -112,7 +115,7 @@ console.log(settings)
     }
   }, [open]);
 
-  useDidMount(() =>  {
+  useDidMount(() => {
     setFilteredCommands(filteredCommands.map((command, idx) => (idx === 0 ? { ...command, selected: true } : { ...command, selected: false })));
   });
 
@@ -120,19 +123,12 @@ console.log(settings)
   //   toggleModalRef.current.click();
   //   inputRef.current.focus();
   // }, []);
-  let keys = ['ControlLeft', 'KeyK']
+  let keys = ['ControlLeft', 'KeyK'];
   // TODO: extract to a helper function
   if (settings?.browserShortcut) {
-    let shortCut = settings.browserShortcut.split('+')
-    shortCut = shortCut.map(item => item.toLowerCase().trim())
-    console.log("shortcute", shortCut)
-    keys = []
-    if (shortCut[0].toLowerCase() === 'ctrl'){
-      keys.push('ControlLeft')
-    }
-    keys.push(`Key${shortCut[1].toUpperCase()}`)
+    keys = commandService.convertShortcutToKeypress(settings.browserShortcut);
   }
-  console.log("key;s", keys)
+  console.log('key;s', keys);
   useKeys(keys, handleCmdK, { target: containerRef });
   useKeys(keys, handleCmdK, { target: containerRef });
 
@@ -148,11 +144,11 @@ console.log(settings)
   };
 
   const onActionCompleted = () => {
-    console.log("onActionCompleted");
+    console.log('onActionCompleted');
     setOpen(false);
     setCommandLabel('>');
   };
-  console.log("open", open)
+  console.log('open', open);
   return (
     <div>
       <Modal open={open} onClickBackdrop={() => setOpen(!open)} className="w-11/12 max-w-5xl !translate-y-10">
@@ -170,7 +166,6 @@ console.log(settings)
           <CommandItemContainer filteredCommands={filteredCommands} filteredCommandLabel={commandLabel} onActionCompleted={onActionCompleted} />
         </Modal.Body>
       </Modal>
-      
     </div>
   );
 }
