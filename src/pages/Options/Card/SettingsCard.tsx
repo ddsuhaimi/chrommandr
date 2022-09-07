@@ -5,7 +5,6 @@ import { getSettings, saveSettings } from '../../../service/storage';
 type Props = {};
 // Saves options to chrome.storage
 
-
 // document.addEventListener('DOMContentLoaded', restoreOptions);
 
 const SettingsCard = (props: Props) => {
@@ -82,6 +81,8 @@ const SettingsCard = (props: Props) => {
         placeholder="Type here"
         className="w-full max-w-xs input input-sm input-bordered"
       />
+      <br />
+      <span>You can get list of possible key combination <a target="_blank" rel="noreferrer" className="link" href="https://www.freecodecamp.org/news/javascript-keycode-list-keypress-event-key-codes/">here</a> </span>
       {/* <input
         value={settings.tabShortcut}
         name="tabShortcut"
@@ -91,7 +92,6 @@ const SettingsCard = (props: Props) => {
         className="w-full max-w-xs input input-sm input-bordered"
       /> */}
       <div className="divider"></div>
-
       <h3 className="my-2 text-xl font-bold">Theme</h3>
       <div className="shadow-lg alert">
         <div>
