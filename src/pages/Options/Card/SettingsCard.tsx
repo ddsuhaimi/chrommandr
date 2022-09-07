@@ -82,7 +82,17 @@ const SettingsCard = (props: Props) => {
         className="w-full max-w-xs input input-sm input-bordered"
       />
       <br />
-      <span>You can get list of possible key combination <a target="_blank" rel="noreferrer" className="link" href="https://www.freecodecamp.org/news/javascript-keycode-list-keypress-event-key-codes/">here</a> </span>
+      <span>
+        You can get list of possible key combination{' '}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          className="link"
+          href="https://www.freecodecamp.org/news/javascript-keycode-list-keypress-event-key-codes/"
+        >
+          here
+        </a>{' '}
+      </span>
       {/* <input
         value={settings.tabShortcut}
         name="tabShortcut"

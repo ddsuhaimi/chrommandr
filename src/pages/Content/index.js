@@ -16,16 +16,15 @@ app.id = 'my-extension-root';
 document.body.appendChild(app);
 function App() {
   const [open, setOpen] = useState(false);
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
 
   const toggleVisible = () => {
-    setVisible(!visible)
-  }
+    setVisible(!visible);
+  };
   return (
     <div>
       <CommandPopup />
     </div>
-
   );
 }
 // ReactDOM.render(<App />, app);

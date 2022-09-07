@@ -19,10 +19,7 @@
       "css": ["content.styles.css"]
     }
   ],
-  "permissions": [
-    "tabs",
-    "storage"
-  ],
+  "permissions": ["tabs", "storage"],
   "host_permissions": ["http://*/"],
   "devtools_page": "devtools.html",
   "web_accessible_resources": [

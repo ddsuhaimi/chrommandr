@@ -10,11 +10,7 @@ console.log('This is the background page.');
 
 console.log('Put the background scripts here...');
 
-chrome.runtime.onMessage.addListener(function (
-  request,
-  sender,
-  sendResponse
-) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   console.log('Incoming request', request);
   if (request.message === 'openSettings') {
     const settingsUrl = 'chrome://settings';
@@ -32,34 +28,33 @@ chrome.runtime.onMessage.addListener(function (
   }
   if (request.message === 'getTabs') {
     chrome.tabs.query({ currentWindow: true }, (tabs) => {
-      console.log("response from background", tabs);
+      console.log('response from background', tabs);
       sendResponse({ response: tabs });
     });
-    return true
+    return true;
   }
   if (request.message === 'openTab') {
     chrome.tabs.update(request.tabId, { active: true }, (tab) => {
-      sendResponse(tab)
+      sendResponse(tab);
     });
     // chrome.tabs.query({ currentWindow: true }, (tabs) => {
     //   console.log("response from background", tabs);
     //   sendResponse({ response: tabs });
     // });
-    return true
+    return true;
   }
   if (request.message === 'closeBrowser') {
     chrome.tabs.query({ currentWindow: true }, (tabs) => {
-      
-      console.log("response from background", tabs);
+      console.log('response from background', tabs);
       for (const openTab of tabs) {
         chrome.tabs.remove(openTab.id);
       }
       sendResponse({ response: tabs });
     });
     chrome.tabs.query({ currentWindow: true }, (tabs) => {
-      console.log("response from background", tabs);
+      console.log('response from background', tabs);
       sendResponse({ response: tabs });
     });
-    return true
+    return true;
   }
 });

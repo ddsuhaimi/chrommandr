@@ -1,6 +1,5 @@
-import React, {useRef, useEffect} from 'react';
-import clsx  from 'clsx';
-
+import React, { useRef, useEffect } from 'react';
+import clsx from 'clsx';
 
 const getIndicesOf = (searchStr, str, caseSensitive) => {
   var searchStrLen = searchStr.length;
@@ -21,7 +20,7 @@ const getIndicesOf = (searchStr, str, caseSensitive) => {
   return indices;
 };
 
-const BoldedText = ({ text, shouldBeBold, selected}) => {
+const BoldedText = ({ text, shouldBeBold, selected }) => {
   if (shouldBeBold[0] === '>') {
     shouldBeBold = shouldBeBold.substring(1);
   }
@@ -37,7 +36,7 @@ const BoldedText = ({ text, shouldBeBold, selected}) => {
   }
   // console.log(occurenceIndices, arr);
   return (
-    <div className={clsx('block', selected && "active")}>
+    <div className={clsx('block', selected && 'active')}>
       {arr.map((item, index) => (
         <span key={Math.random()}>{item.toLowerCase() === shouldBeBold.toLowerCase() ? <b>{item}</b> : item}</span>
       ))}
@@ -53,10 +52,7 @@ const CommandItem = ({ command, onActionCompleted, commandRef, commandLabel }) =
   // console.log("_> ", command.label, commandLabel);
 
   return (
-    <li
-      cursor={'pointer'}
-      onClick={onClickCommand}
-    >
+    <li cursor={'pointer'} onClick={onClickCommand}>
       <BoldedText text={command.label} shouldBeBold={commandLabel} selected={command.selected} />
     </li>
   );

@@ -1,8 +1,7 @@
-
 module.exports = {
   singleQuote: true,
-  trailingComma: "es5",
+  trailingComma: 'es5',
   requirePragma: false,
-  arrowParens: "always",
-  printWidth: 150
-}
+  arrowParens: 'always',
+  printWidth: 150,
+};

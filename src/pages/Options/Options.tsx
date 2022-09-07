@@ -43,9 +43,9 @@ const Options: React.FC<Props> = ({ title }: Props) => {
       </div>
       <div className="w-full card bg-base-100">
         <div className="px-2 card-body">
-          {activeTab === "settings" && <SettingsCard />}
-          {activeTab === "about" && <AboutCard />}
-          {activeTab === "help" && <HelpCard />}
+          {activeTab === 'settings' && <SettingsCard />}
+          {activeTab === 'about' && <AboutCard />}
+          {activeTab === 'help' && <HelpCard />}
         </div>
       </div>
     </div>

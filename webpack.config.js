@@ -16,18 +16,7 @@ const alias = {
 // load the secrets
 const secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js');
 
-const fileExtensions = [
-  'jpg',
-  'jpeg',
-  'png',
-  'gif',
-  'eot',
-  'otf',
-  'svg',
-  'ttf',
-  'woff',
-  'woff2',
-];
+const fileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'eot', 'otf', 'svg', 'ttf', 'woff', 'woff2'];
 
 if (fileSystem.existsSync(secretsPath)) {
   alias['secrets'] = secretsPath;
@@ -68,26 +57,26 @@ let options = {
               insert: function (element) {
                 const extensionHostID = 'extension-host';
                 let extensionHost = document.getElementById(extensionHostID);
-      
+
                 if (!extensionHost) {
                   // ONLY FOR CONTENT SCRIPT
                   extensionHost = document.createElement('div');
                   extensionHost.setAttribute('id', extensionHostID);
                   document.body.append(extensionHost);
-                  extensionHost.attachShadow({mode: 'open'});
+                  extensionHost.attachShadow({ mode: 'open' });
                   // Add style tag to shadow host
                   extensionHost.shadowRoot.appendChild(element);
                 } else {
                   // FOR EVERy OTHER PAGES
-                  document.head.append(element)
+                  document.head.append(element);
                 }
               },
-            }
+            },
           },
           {
             loader: 'css-loader',
           },
-          {loader: 'postcss-loader'},
+          { loader: 'postcss-loader' },
           // {
           //   loader: 'sass-loader',
           //   options: {
@@ -110,12 +99,15 @@ let options = {
         test: /\.less$/i,
         use: [
           // compiles Less to CSS
-          {loader: "style-loader"},
-         {loader:"css-loader"},
-          {loader: "less-loader", options: {
-            lessOptions: {javascriptEnabled: true}
-        }},
-        ]
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          {
+            loader: 'less-loader',
+            options: {
+              lessOptions: { javascriptEnabled: true },
+            },
+          },
+        ],
       },
       {
         test: /\.html$/,
@@ -139,9 +131,7 @@ let options = {
   },
   resolve: {
     alias: alias,
-    extensions: fileExtensions
-      .map((extension) => '.' + extension)
-      .concat(['.js', '.jsx', '.ts', '.tsx', '.css']),
+    extensions: fileExtensions.map((extension) => '.' + extension).concat(['.js', '.jsx', '.ts', '.tsx', '.css']),
   },
   plugins: [
     new CleanWebpackPlugin({ verbose: false }),

@@ -1,4 +1,3 @@
-
 # Chrommandr
 
 Chrommandr is a browser extension which gives you command palette in your browser just like Visual Studio Code. You can do the followings with Chrommandr:
@@ -8,31 +7,35 @@ Chrommandr is a browser extension which gives you command palette in your browse
 
 You can install Chrommandr on Chromium-based browser such as Google Chrome, Chromium or Brave.
 
-
 ## Demo
+
 ![DEMO Chrommandr](https://user-images.githubusercontent.com/30659198/185647428-441b160f-c894-46da-bb58-73e713a569d2.gif)
-
-
-
 
 ## Development
 
 1. Clone the project
+
 ```bash
-git clone 
+git clone
 ```
+
 2. Open the project and install dependencies
+
 ```bash
 cd chrommandr
 npm install
 ```
+
 3. Run the project
+
 ```bash
 npm start
 ```
-4. Open Google Chrome and go to `chrome://extensions` 
+
+4. Open Google Chrome and go to `chrome://extensions`
 5. Enable developer mode and click load unpacked. Select the build folder of Chrommandr
 6. Chrommandr should now be running in your browser
+
 ## Roadmap
 
 > :warning: **Chrommandr is under heavy development right now.** Feel free to contribute :)

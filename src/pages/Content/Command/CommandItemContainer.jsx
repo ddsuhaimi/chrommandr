@@ -10,16 +10,16 @@ const CommandItemContainer = ({ filteredCommands, onActionCompleted, commandRef,
             <a>No Matching Results</a>
           </li>
         )}
-        {filteredCommands.length  > 0 && filteredCommands.map((command) => (
-
-          <CommandItem
-            command={command}
-            key={command.id}
-            onActionCompleted={onActionCompleted}
-            commandRef={commandRef}
-            commandLabel={filteredCommandLabel}
-          />
-        ))}
+        {filteredCommands.length > 0 &&
+          filteredCommands.map((command) => (
+            <CommandItem
+              command={command}
+              key={command.id}
+              onActionCompleted={onActionCompleted}
+              commandRef={commandRef}
+              commandLabel={filteredCommandLabel}
+            />
+          ))}
       </ul>
     </div>
   );
