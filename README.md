@@ -39,4 +39,4 @@ npm start
 
 You can look for planned features and issue [here](https://github.com/users/ddsuhaimi/projects/1).
 
-We plan to release v1.0.0 by September 2022 :pray:
+~~We plan to release v1.0.0 by September 2022 :pray:~~ Who am I kidding, October 2022 it is :)
