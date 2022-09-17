@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useKeys, useDidMount } from 'rooks';
+import { useKeys, useKey, useDidMount } from 'rooks';
 import Modal from '../../../components/Modal';
 import CommandItemContainer from './CommandItemContainer';
 import allCommands from './allCommands';
@@ -107,6 +107,11 @@ export default function CommandPopup() {
     e.preventDefault();
   };
 
+  const handleEsc = (e) => {
+    setOpen(false);
+    setCommandLabel('>');
+  };
+
   useEffect(() => {
     if (open) {
       inputRef.current.focus();
@@ -131,6 +136,7 @@ export default function CommandPopup() {
   console.log('key;s', keys);
   useKeys(keys, handleCmdK, { target: containerRef });
   useKeys(keys, handleCmdK, { target: containerRef });
+  useKey('Escape', handleEsc, { target: containerRef });
 
   const onChangeCommand = (e) => {
     setCommandLabel(e.target.value);
