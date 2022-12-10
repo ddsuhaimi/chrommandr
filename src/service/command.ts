@@ -1,10 +1,13 @@
 export const convertShortcutToKeypress = (shortcut: string): string[] => {
   let keys = [];
-  let shortCut = shortcut.split('+').map((item) => item.trim().toLowerCase());
-  keys = [];
-  if (shortCut[0].toLowerCase() === 'ctrl') {
-    keys.push('ControlLeft');
+  for (const key of shortcut.split('+')) {
+    if (key === 'Ctrl') {
+      keys.push('ctrl');
+    } else if (key === 'Shift') {
+      keys.push('shift');
+    } else {
+      keys.push(key.trim());
+    }
   }
-  keys.push(`Key${shortCut[1].toUpperCase()}`);
-  return keys;
+  return [keys.join('.')];
 };

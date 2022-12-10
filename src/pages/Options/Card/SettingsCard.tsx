@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useAsyncEffect } from 'rooks';
+
 import Toast from '../../../components/Toast';
 import { getSettings, saveSettings } from '../../../service/storage';
+import ShortcutInput from './ShortcutInput';
 type Props = {};
 // Saves options to chrome.storage
 
@@ -13,8 +15,8 @@ const SettingsCard = (props: Props) => {
     tabShortcut: '',
   });
 
-  const handleChangeShortcut = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSettings({ ...settings, [e.target.name]: e.target.value });
+  const handleChangeShortcut = (name: string, newShortcut: string) => {
+    setSettings({ ...settings, [name]: newShortcut });
   };
   const handleClickSaveSettings = async (e: React.MouseEvent<HTMLButtonElement>) => {
     await saveSettings(settings);
@@ -63,24 +65,26 @@ const SettingsCard = (props: Props) => {
       </button> */}
       <h3 className="my-2 text-xl font-bold">Shortcut</h3>
       <label>Browser command activation shortcut:</label>
-      <input
+      <ShortcutInput onChange={handleChangeShortcut} value={settings.browserShortcut} name="browserShortcut" />
+      {/* <input
         value={settings.browserShortcut}
         name="browserShortcut"
-        onChange={handleChangeShortcut}
+        // onChange={handleChangeShortcut}
         type="text"
         placeholder="Type here"
         className="w-full max-w-xs input input-sm input-bordered"
-      />
+      /> */}
       <br />
       <label>Tab command activation shortcut:</label>
-      <input
+      <ShortcutInput onChange={handleChangeShortcut} value={settings.tabShortcut} name="tabShortcut" />
+      {/* <input
         value={settings.tabShortcut}
         name="tabShortcut"
         onChange={handleChangeShortcut}
         type="text"
         placeholder="Type here"
         className="w-full max-w-xs input input-sm input-bordered"
-      />
+      /> */}
       <br />
       <span>
         You can get list of possible key combination{' '}

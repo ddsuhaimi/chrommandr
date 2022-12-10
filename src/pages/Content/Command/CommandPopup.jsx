@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useKeys, useKey, useDidMount } from 'rooks';
+import { useKeyPress } from 'ahooks';
+
 import Modal from '../../../components/Modal';
 import CommandItemContainer from './CommandItemContainer';
 import allCommands from './allCommands';
@@ -94,14 +96,21 @@ export default function CommandPopup() {
     });
   };
 
-  const handleCmdK = async (e) => {
-    console.log(settings);
+  
+  const handleCmdK = async (e, arg) => {
+    e.preventDefault()
+    console.log(e)
+    console.log("arg", arg)
+    // console.log(settings);
 
     if (!open) {
       setOpen(true);
     } else {
       setOpen(false);
     }
+
+    if (arg === "browser") setCommandLabel(">")
+    else setCommandLabel("")
 
     // prevent browser from handling CMD/CTRL + K
     e.preventDefault();
@@ -128,14 +137,42 @@ export default function CommandPopup() {
   //   toggleModalRef.current.click();
   //   inputRef.current.focus();
   // }, []);
-  let keys = ['ControlLeft', 'KeyK'];
+  // let keys = ['ControlLeft', 'KeyK'];
+  let browserKeys = []
+  let tabKeys = []
   // TODO: extract to a helper function
+  // console.log(settings)
   if (settings?.browserShortcut) {
-    keys = commandService.convertShortcutToKeypress(settings.browserShortcut);
+    browserKeys = commandService.convertShortcutToKeypress(settings.browserShortcut);
   }
-  console.log('key;s', keys);
-  useKeys(keys, handleCmdK, { target: containerRef });
-  useKeys(keys, handleCmdK, { target: containerRef });
+  if (settings?.tabShortcut) {
+    tabKeys = commandService.convertShortcutToKeypress(settings.tabShortcut);
+    // tabKeys = ["ControlLeft" , "ShiftLeft", "KeyK"]
+  }
+  
+  console.log("browserKeys", browserKeys)
+  console.log("tabKeys", tabKeys)
+  // console.log('key;s', keys);
+  // useKeys(browserKeys, e => handleCmdK(e, "browser"), { target: containerRef });
+  // useKeys(tabKeys, e => handleCmdK(e, "tab"), { target: containerRef });
+  useKeyPress(
+    browserKeys,
+    (e) => {
+      handleCmdK(e, "browser");
+    },
+    {
+      exactMatch: true,
+    },
+  );
+  useKeyPress(
+    tabKeys,
+    (e) => {
+      handleCmdK(e, "tab");
+    },
+    {
+      exactMatch: true,
+    },
+  );
   useKey('Escape', handleEsc, { target: containerRef });
 
   const onChangeCommand = (e) => {
@@ -154,7 +191,7 @@ export default function CommandPopup() {
     setOpen(false);
     setCommandLabel('>');
   };
-  console.log('open', open);
+  // console.log('open', open);
   return (
     <div>
       <Modal open={open} onClickBackdrop={() => setOpen(!open)} className="w-11/12 max-w-5xl !translate-y-10">
