@@ -96,11 +96,10 @@ export default function CommandPopup() {
     });
   };
 
-  
   const handleCmdK = async (e, arg) => {
-    e.preventDefault()
-    console.log(e)
-    console.log("arg", arg)
+    e.preventDefault();
+    console.log(e);
+    console.log('arg', arg);
     // console.log(settings);
 
     if (!open) {
@@ -109,8 +108,8 @@ export default function CommandPopup() {
       setOpen(false);
     }
 
-    if (arg === "browser") setCommandLabel(">")
-    else setCommandLabel("")
+    if (arg === 'browser') setCommandLabel('>');
+    else setCommandLabel('');
 
     // prevent browser from handling CMD/CTRL + K
     e.preventDefault();
@@ -138,8 +137,8 @@ export default function CommandPopup() {
   //   inputRef.current.focus();
   // }, []);
   // let keys = ['ControlLeft', 'KeyK'];
-  let browserKeys = []
-  let tabKeys = []
+  let browserKeys = [];
+  let tabKeys = [];
   // TODO: extract to a helper function
   // console.log(settings)
   if (settings?.browserShortcut) {
@@ -149,29 +148,29 @@ export default function CommandPopup() {
     tabKeys = commandService.convertShortcutToKeypress(settings.tabShortcut);
     // tabKeys = ["ControlLeft" , "ShiftLeft", "KeyK"]
   }
-  
-  console.log("browserKeys", browserKeys)
-  console.log("tabKeys", tabKeys)
+
+  console.log('browserKeys', browserKeys);
+  console.log('tabKeys', tabKeys);
   // console.log('key;s', keys);
   // useKeys(browserKeys, e => handleCmdK(e, "browser"), { target: containerRef });
   // useKeys(tabKeys, e => handleCmdK(e, "tab"), { target: containerRef });
   useKeyPress(
     browserKeys,
     (e) => {
-      handleCmdK(e, "browser");
+      handleCmdK(e, 'browser');
     },
     {
       exactMatch: true,
-    },
+    }
   );
   useKeyPress(
     tabKeys,
     (e) => {
-      handleCmdK(e, "tab");
+      handleCmdK(e, 'tab');
     },
     {
       exactMatch: true,
-    },
+    }
   );
   useKey('Escape', handleEsc, { target: containerRef });
 

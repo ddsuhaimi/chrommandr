@@ -1,6 +1,5 @@
 import React, { KeyboardEventHandler, useState, useRef, KeyboardEvent } from 'react';
 
-
 type Props = {
   onChange: (name: string, newShortcut: string) => void;
   value: string;
@@ -17,8 +16,8 @@ const ShortcutInput = (props: Props) => {
     if (!isFocus) return;
 
     e.preventDefault();
-    if (e.key.toLowerCase() === "control") {
-      e.key = "Ctrl"
+    if (e.key.toLowerCase() === 'control') {
+      e.key = 'Ctrl';
     }
 
     setInputValue((input) => (input === '' ? e.key.toString() : input.toString() + '+' + e.key.toString()));
@@ -34,8 +33,8 @@ const ShortcutInput = (props: Props) => {
   };
 
   const deleteShortcut = (e: any) => {
-      props.onChange(props.name, inputValue);
-      setInputValue('');
+    props.onChange(props.name, inputValue);
+    setInputValue('');
   };
 
   return (
